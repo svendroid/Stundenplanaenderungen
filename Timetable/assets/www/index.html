@@ -1,0 +1,79 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>Stundenplanänderungen Hochschule Hof</title>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<link rel="stylesheet" href="css/jquery.mobile-1.0.1.min.css" />
+<link rel="stylesheet" href="css/jqm-icon-pack-1.0.css" />
+<link rel="stylesheet" href="css/styles.css" />
+</head>
+    
+<body>
+        
+<div id="changeListPage" data-role="page">
+
+	<div data-role="header" data-theme="e" data-position="inline">
+		<h1>Stundenplanänderungen HS Hof</h1>
+		<a href="#" onClick="refresh();" data-icon="refresh" class="ui-btn-right" data-theme="c" data-iconpos="notext">Refresh</a>
+	</div>
+
+	<div data-role="content" class="shadow">
+
+		<ul id="changeList" data-role="listview" data-filter="false" 
+			data-inset="false" data-theme="d" data-divider-theme="e">
+<!-- 			<li data-role="list-divider" role="heading">Stundenplanänderungen</li> -->
+			<li data-role="fieldcontain">
+<!-- 				<label for="select-course" class="select">Wähle Deinen Studiengang:</label> -->
+				<select name="select-course" id="select-course">
+					<option value="null" disabled="disabled">Wähle Deinen Studiengang</option>
+					<option value="BW">Betriebswirtschaft</option>
+					<option value="IM">Internationales Management</option>
+					<option value="Inf">Informatik</option>
+					<option value="InnoTex">Innovative Textilien</option>
+					<option value="Master GI">German-Indian Management Studies</option>
+					<option value="Master IWS">Internet - Web Science</option>
+					<option value="Master L">Logistik</option>
+					<option value="Master M">Marketing Management</option>
+					<option value="Master SWE">Master SWE</option>
+					<option value="MB">Maschinenbau</option>
+					<option value="MI">Medieninformatik</option>
+					<option value="Sprache">Sprache</option>
+					<option value="SW">Systemwerkstoffe</option>
+					<option value="TD">Textildesign</option>
+					<option value="TT C">TT C</option>
+					<option value="TT T">TT T</option>
+					<option value="UT">UT</option>
+					<option value="Vinf">Vinf</option>
+					<option value="WI">Wirtschaftsinformatik</option>
+					<option value="Wing">Wirtschaftsingenieurwesen</option>
+					<option value="Wing IT">Wirtschaftsingenieurwesen IT</option>
+					<option value="Wing MT">Wirtschaftsingenieurwesen MT</option>
+					<option value="Wing WT">Wirtschaftsingenieurwesen WT</option>
+					<option value="WR">Wirtschaftsrecht</option>
+				</select>
+			</li>
+			
+			<li class="data">
+				<h3>Noch liegen bleiben?</h3>
+				<p>Finde heraus, ob du noch länger schlafen kannst. Wähle Deinen Studiengang, um auf die Stundenplanänderungen der Hochschule Hof zuzugreifen.</p>
+			</li>
+		</ul>
+    </div>
+    
+    <div class="customfooter">
+		<p>Über Anregungen, Verbesserungsvorschläge und Fehlermeldungen per Email oder Twitter würde ich mich freuen.</p>
+		<a href="#" id="btn_email" data-role="button" data-inline="true" data-icon="email">Email</a>
+		<a href="#" id="btn_twitter" data-role="button" data-inline="true" data-icon="twitter">Twitter</a>
+		<a href="https://play.google.com/store/search?q=pub:svendroid" id="btn_store" data-role="button" data-inline="true" data-icon="android">Play</a>
+    </div>
+</div>
+
+<script src="js/jquery-1.6.4.min"></script>
+<script src="js/jquery.mobile-1.0.1.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="js/phonegap-1.4.1.js"></script>
+<script type="text/javascript" charset="utf-8" src="js/webintent.js"></script>
+<script src="js/changelist.js"></script>
+
+</body>
+
+</html>
