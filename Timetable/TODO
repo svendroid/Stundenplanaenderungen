@@ -1,10 +1,10 @@
 TODO: Stundeplanänderungsapp
 - Footer fixed position
-	[20:10:37] a r n o: so dass der footer auch imemr amunteren bildschirmrand klebt
+	a r n o: so dass der footer auch imemr amunteren bildschirmrand klebt
 - Fehlermeldungen
-	[20:11:16] a r n o: dann fänd ichs noch kuhl wenn da bei ner leeren liste stehen würde "Keine Stundenplanänderungen bekannt" oder so
+	a r n o: dann fänd ichs noch kuhl wenn da bei ner leeren liste stehen würde "Keine Stundenplanänderungen bekannt" oder so
 - Ladebalken / Laderad
-	[20:12:17] a r n o: was auch kuhl wär is so ein lade rädchen
+	a r n o: was auch kuhl wär is so ein lade rädchen
 - Refresh Button ändern
 	wenns vom cleint ist würd ichs zusammen mit dem refresh button nach oben unter die studeingangswahl setzen
 - 1.3.112 --> BUUUG
