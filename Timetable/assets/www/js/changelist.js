@@ -3,7 +3,12 @@ $('#select-course').bind('change', function(event){
     getChangeList(selection);
 });
 
+function alertDismissed(){
+    
+}
+
 function getChangeList(course) {
+    $.mobile.showPageLoadingMsg();   
     $('#changeList li.data').remove(); //remove old entries
     
     //check if a network connection exists
@@ -13,10 +18,16 @@ function getChangeList(course) {
                 '<h3>Keine Internetverbindung vorhanden!</h3>'+
                 '<p>Es wird eine Internetverbindung benötigt um die Stundenplanänderungen abzurufen.</p>'+
                 '</li>');
+        $.mobile.hidePageLoadingMsg();
     }else{
         $.getJSON('http://svenadolph.net/timetable/getchanges.php?course='+course, function(data) {
     		changes = data.items;
     		
+            var now = new Date();
+    		$('#changeList').append('<li class="data">Zuletzt abgerufen am '+
+                    now.getDate()+'.'+now.getMonth()+'.'+now.getFullYear()+
+                    ' um '+now.getHours()+':'+now.getMinutes()+' Uhr.</li>');
+
     		if(changes.length === 0){
     		    $('#changeList').append('<li class="data">'+
     		                            '<h3>Keine Stundenplanänderungen vorhanden!</h3>'+
@@ -30,11 +41,8 @@ function getChangeList(course) {
     			                              '</p><strong>Neu:' + change.alternatedate +
     			                              '</strong></li>');
     		});		
-    		var now = new Date();
-            $('#changeList').append('<li class="data">Zuletzt abgerufen am '+
-                                    now.getDate()+'.'+now.getMonth()+'.'+now.getFullYear()+
-                                    ' um '+now.getHours()+':'+now.getMinutes()+' Uhr.</li>');
     		$('#changeList').listview('refresh');
+    	    $.mobile.hidePageLoadingMsg();
     	});
     }
     $('#changeList').listview('refresh');
