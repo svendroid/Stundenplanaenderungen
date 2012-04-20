@@ -1,6 +1,6 @@
 TODO:
 - Footer fixed position
-	a r n o: so dass der footer auch imemr amunteren bildschirmrand klebt
+	a r n o: so dass der footer auch immer am unteren bildschirmrand klebt
 - Fehlermeldungen
 	a r n o: dann fänd ichs noch kuhl wenn da bei ner leeren liste stehen würde "Keine Stundenplanänderungen bekannt" oder so
 - Refresh Button ändern
@@ -8,6 +8,7 @@ TODO:
 - mensa app bewerben
 	aber im footer würd ischs schön mit icon und einzeiliger beschreibung bewerben
 	uh am effektifsten wärs wenn der letzte eintrag in jeder änderungsliste ne werbung fürs die mensaapp wär
+- in Kalender speichern
 
 Zukunftsmusik:
 - Push Notifications

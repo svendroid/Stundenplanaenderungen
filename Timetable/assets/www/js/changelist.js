@@ -24,9 +24,9 @@ function getChangeList(course) {
     		changes = data.items;
     		
             var now = new Date();
-    		$('#changeList').append('<li class="data">Zuletzt abgerufen am '+
+    		$('#changeList').append('<li class="data" data-icon="false" style="font-size:12px;"><a href="#" onClick="refresh();">Stand '+
                     now.getDate()+'.'+now.getMonth()+'.'+now.getFullYear()+
-                    ' um '+now.getHours()+':'+now.getMinutes()+' Uhr.</li>');
+                    ', '+now.getHours()+':'+now.getMinutes()+' Uhr. Zum Aktualisieren klicken ...</a></li>');
 
     		if(changes.length === 0){
     		    $('#changeList').append('<li class="data">'+
