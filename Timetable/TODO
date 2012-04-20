@@ -1,17 +1,22 @@
 TODO:
-- horizontaler scrollbalken weg
+- Bug: horizontaler scrollbalken
+- Bug: SW für Systemwerkstoffe und SWE / edit preg_match("/".$courseParam."/", $course) line 26
 - Fehlermeldungen
 	a r n o: dann fänd ichs noch kuhl wenn da bei ner leeren liste stehen würde "Keine Stundenplanänderungen bekannt" oder so
-- mensa app bewerben
-	aber im footer würd ischs schön mit icon und einzeiliger beschreibung bewerben
-	uh am effektifsten wärs wenn der letzte eintrag in jeder änderungsliste ne werbung fürs die mensaapp wär
 - scroll to bottom of page
+- Sortierung der Liste -> semester -> datum
+- Einträge anders darstellen? Datum groß oder so?
+
 
 Zukunftsmusik:
 - Push Notifications
 - Merken von studiengang
 - Widget
 - in Kalender speichern (offizieller intent erst ab ics)
+- mensa app bewerben
+	aber im footer würd ischs schön mit icon und einzeiliger beschreibung bewerben
+	uh am effektifsten wärs wenn der letzte eintrag in jeder änderungsliste ne werbung fürs die mensaapp wär
+
 
 DONE:
 - Ladebalken / Laderad
