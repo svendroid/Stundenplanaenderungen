@@ -9,15 +9,15 @@
 </head>
     
 <body>
-        
+       
 <div id="changeListPage" data-role="page">
 
-	<div data-role="header" data-theme="e" data-position="inline">
+	<div data-role="header" data-theme="e" data-position="fixed">
 		<h1>Stundenplanänderungen HS Hof</h1>
 <!-- 		<a href="#" onClick="refresh();" data-icon="refresh" class="ui-btn-right" data-theme="c" data-iconpos="notext">Refresh</a> -->
 	</div>
 
-	<div data-role="content" style="min-height: 500px">
+	<div data-role="content" class="customcontent">
 
 		<ul id="changeList" data-role="listview" data-filter="false" 
 			data-inset="false" data-theme="d" data-divider-theme="e">
@@ -52,20 +52,12 @@
 					<option value="WR">Wirtschaftsrecht</option>
 				</select>
 			</li>
-			<li class="data"  data-icon="false" style="font-size:12px;">
-				
-								
-				<a href="#" onClick="refresh();" style="text-align:center;">
-					<!-- 					<img src="css/images/refresh.png" alt="icon1" class="ui-li-icon"> -->
-					Stand 20.03.2012, 18:55 Uhr. Zum Aktualisieren klicken ...
-				</a>
-			</li>
 			<li class="data">
 				<h3>Noch liegen bleiben?</h3>
 				<p>Finde heraus, ob du noch länger schlafen kannst. Wähle Deinen Studiengang, um auf die Stundenplanänderungen der Hochschule Hof zuzugreifen.</p>
 			</li>
 		</ul>
-		<div class="empty"></div>
+<!-- 		<div class="empty"></div> -->
     </div>
     
 

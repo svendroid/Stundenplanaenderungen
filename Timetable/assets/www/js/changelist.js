@@ -22,11 +22,16 @@ function getChangeList(course) {
     }else{
         $.getJSON('http://svenadolph.net/timetable/getchanges.php?course='+course, function(data) {
     		changes = data.items;
+    		var currentCourse = null;
     		
             var now = new Date();
-    		$('#changeList').append('<li class="data" data-icon="false" style="font-size:12px;"><a href="#" onClick="refresh();">Stand '+
-                    now.getDate()+'.'+now.getMonth()+'.'+now.getFullYear()+
-                    ', '+now.getHours()+':'+now.getMinutes()+' Uhr. Zum Aktualisieren klicken ...</a></li>');
+            var dateString = ('0' + now.getDate()).slice(-2) + '.'
+            + ('0' + (now.getMonth()+1)).slice(-2) + '.'
+            + now.getFullYear()+', '
+            + ('0' + (now.getHours())).slice(-2) + ':'
+            + ('0' + (now.getMinutes())).slice(-2) + ' Uhr';            
+    		$('#changeList').append('<li class="data" data-icon="false" style="font-size:12px;"><a href="#" onClick="refresh();">'+
+    		        'Stand '+dateString+'. Zum Aktualisieren klicken ...</a></li>');
 
     		if(changes.length === 0){
     		    $('#changeList').append('<li class="data">'+
@@ -35,10 +40,14 @@ function getChangeList(course) {
     		}
     		
     		$.each(changes, function(index, change) {
-    			$('#changeList').append('<li class="data"><h3>' + change.lecture +
-    			                              '</h3><p>' + change.course + 
-    			                              '</p><p>Alt: ' + change.originaldate +
-    			                              '</p><strong>Neu:' + change.alternatedate +
+    			if(currentCourse !== change.course){
+    			    $('#changeList').append('<li class="data" data-role="list-divider">' + change.course +
+    			            ' Semester</li>');
+    			    currentCourse = change.course;
+    			}    		    
+    		    $('#changeList').append('<li class="data"><h3>' + change.lecture +
+    			                              '</h3><p>Alt: ' + change.originaldate +
+    			                              '</p><strong>Neu: ' + change.alternatedate +
     			                              '</strong></li>');
     		});		
     		$('#changeList').listview('refresh');

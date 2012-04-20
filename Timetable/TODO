@@ -1,21 +1,23 @@
 TODO:
-- Footer fixed position
-	a r n o: so dass der footer auch immer am unteren bildschirmrand klebt
+- horizontaler scrollbalken weg
 - Fehlermeldungen
 	a r n o: dann fänd ichs noch kuhl wenn da bei ner leeren liste stehen würde "Keine Stundenplanänderungen bekannt" oder so
-- Refresh Button ändern
-	wenns vom cleint ist würd ichs zusammen mit dem refresh button nach oben unter die studeingangswahl setzen
 - mensa app bewerben
 	aber im footer würd ischs schön mit icon und einzeiliger beschreibung bewerben
 	uh am effektifsten wärs wenn der letzte eintrag in jeder änderungsliste ne werbung fürs die mensaapp wär
-- in Kalender speichern
+- scroll to bottom of page
 
 Zukunftsmusik:
 - Push Notifications
 - Merken von studiengang
 - Widget
-
+- in Kalender speichern (offizieller intent erst ab ics)
 
 DONE:
 - Ladebalken / Laderad
 	a r n o: was auch kuhl wär is so ein lade rädchen
+- Refresh Button ändern
+	wenns vom cleint ist würd ichs zusammen mit dem refresh button nach oben unter die studeingangswahl setzen
+- Footer fixed position / footer ist immer unten
+	a r n o: so dass der footer auch immer am unteren bildschirmrand klebt
+	
