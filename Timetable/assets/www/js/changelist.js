@@ -1,11 +1,18 @@
+// Wait for PhoneGap to load
+//
+document.addEventListener("deviceready", onDeviceReady, false);
+
+function onDeviceReady() {
+    console.log("Hallo Sven Phonegap is ready!");
+    console.log("option: "+window.localStorage.getItem("option"));
+    refresh();
+}
+
 $('#select-course').bind('change', function(event){
     var selection = $(this).val();
+    //window.localStorage.setItem("option", selection);
     getChangeList(selection);
 });
-
-function alertDismissed(){
-    
-}
 
 function getChangeList(course) {
     $.mobile.showPageLoadingMsg();   
@@ -58,14 +65,21 @@ function getChangeList(course) {
 }
 
 function refresh(){
-    var option = $('#select-course').val();
+    var option = $('#select-course').val();    
+    var oldOption = window.localStorage.getItem("option");
     if(option === "null"){
-        $('#changeList li.data').remove(); //remove old entries
-        $('#changeList').append('<li class="data">'+
-                                '<h3>Bitte wähle einen Studiengang!</h3>'+
-                                '</li>');
-        $('#changeList').listview('refresh');
+        if(oldOption === "null"){        
+            $('#changeList li.data').remove(); //remove old entries
+            $('#changeList').append('<li class="data">'+
+                                    '<h3>Bitte wähle einen Studiengang!</h3>'+
+                                    '</li>');
+            $('#changeList').listview('refresh');
+        }else{
+            option = oldOption;
+            $('#select-course').val(oldOption).trigger('change');
+        }
     }else{
+        window.localStorage.setItem("option", option);
         getChangeList(option);
     }
 }
