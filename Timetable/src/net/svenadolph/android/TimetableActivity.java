@@ -1,7 +1,9 @@
 package net.svenadolph.android;
 
-import com.phonegap.*;
 import android.os.Bundle;
+
+import com.phonegap.DroidGap;
+
 
 public class TimetableActivity extends DroidGap {
     /** Called when the activity is first created. */
