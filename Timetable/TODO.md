@@ -1,4 +1,4 @@
-TODO:
+## TODO:
 - Bug: horizontaler scrollbalken
 - Bug: SW für Systemwerkstoffe und SWE / edit preg_match("/".$courseParam."/", $course) line 26
 - Fehlermeldungen
@@ -8,11 +8,10 @@ TODO:
 - Einträge anders darstellen? Datum groß oder so?
 - Detailseite: Sven
 - Local Storage: Olsen
-- libs updaten: Sven
+- libs updaten: Sven jQueryMobile fehlt noch!!!
 - Kalender eintragen: Sven
 
-
-Zukunftsmusik:
+## Zukunftsmusik:
 - Push Notifications
 - Merken von studiengang
 - Widget
@@ -21,8 +20,7 @@ Zukunftsmusik:
 	aber im footer würd ischs schön mit icon und einzeiliger beschreibung bewerben
 	uh am effektifsten wärs wenn der letzte eintrag in jeder änderungsliste ne werbung fürs die mensaapp wär
 
-
-DONE:
+## DONE:
 - Ladebalken / Laderad
 	a r n o: was auch kuhl wär is so ein lade rädchen
 - Refresh Button ändern

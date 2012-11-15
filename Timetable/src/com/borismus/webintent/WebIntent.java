@@ -4,17 +4,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.cordova.DroidGap;
+import org.apache.cordova.api.Plugin;
+import org.apache.cordova.api.PluginResult;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.Intent;
 import android.net.Uri;
-import android.util.Log;
 import android.text.Html;
-
-import org.apache.cordova.api.Plugin;
-import org.apache.cordova.api.PluginResult;
 
 /**
  * WebIntent is a PhoneGap plugin that bridges Android intents and web
@@ -27,6 +25,7 @@ import org.apache.cordova.api.PluginResult;
  * @author boris@borismus.com
  * 
  */
+@SuppressWarnings("deprecation")
 public class WebIntent extends Plugin {
 
     private String onNewIntentCallback = null;
