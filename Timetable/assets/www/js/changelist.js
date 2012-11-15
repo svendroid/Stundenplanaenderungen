@@ -31,6 +31,7 @@ function getChangeList(course) {
     		changes = data.items;
     		var currentCourse = null;
     		
+			// The whole date crap for the refresh button(line)
             var now = new Date();
             var dateString = ('0' + now.getDate()).slice(-2) + '.'
             + ('0' + (now.getMonth()+1)).slice(-2) + '.'
@@ -46,6 +47,7 @@ function getChangeList(course) {
     		                            '</li>');
     		}
     		
+			// Write all timetable changes to UI
     		$.each(changes, function(index, change) {
     			if(currentCourse !== change.course){
     			    $('#changeList').append('<li class="data" data-role="list-divider">' + change.course +
