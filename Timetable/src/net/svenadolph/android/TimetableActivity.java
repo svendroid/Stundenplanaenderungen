@@ -1,8 +1,8 @@
 package net.svenadolph.android;
 
-import android.os.Bundle;
+import org.apache.cordova.DroidGap;
 
-import com.phonegap.DroidGap;
+import android.os.Bundle;
 
 
 public class TimetableActivity extends DroidGap {
