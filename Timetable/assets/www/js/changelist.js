@@ -20,47 +20,48 @@ function onFSSuccess(fs) {
 }
 
 function onError(e) {
-	alert(e);
+	console.log(e);
 }
 
 function getChangeList(course) {
     
-	alert("getChangeList: entered");
+	console.log("getChangeList: entered");
     
     // check if a network connection exists
     var networkState = navigator.network.connection.type;
     if(networkState === Connection.NONE){
-    	alert("getChangeList: No Connection");
+    	console.log("getChangeList: No Connection");
         $('#changeList').append('<li class="data">'+
                 '<h3>Keine Internetverbindung vorhanden!</h3>'+
                 '<p>Es wird eine Internetverbindung benötigt um die Stundenplanänderungen abzurufen.</p>'+
                 '</li>');
         $.mobile.hidePageLoadingMsg();
     }else{
-    	alert("getChangeList: Got Connection");
+    	console.log("getChangeList: Got Connection");
         $.getJSON('http://svenadolph.net/timetable/getchanges.php?course='+course, function(data) {
-        	alert("getChangeList: Fetched JSON");
+        	console.log("getChangeList: Fetched JSON");
     		// Write json to file
             fileSystem.root.getFile("changes.json", {create:true, exclusive: true}, function(fileEntry) {
-            	alert("getChangeList: Got File Access");
+            	console.log("getChangeList: Got File Access");
             	fileEntry.createWriter(function(writer) {
-            		alert("getChangeList: Writting File to storage");
+            		console.log("getChangeList: Writting File to storage");
             		writer.write(JSON.stringify(data));
-            		alert("getChangeList: File written to storage");
+            		console.log("getChangeList: File written to storage");
             	}, onError());
             }, onError());
     		
     	    $.mobile.hidePageLoadingMsg();
+            //readChangeList(course);
     	}, onError());
     }
     $('#changeList').listview('refresh');
     
-    readChangeList(course);
-    alert("getChangeList: leaving");
+    //readChangeList(course);
+    console.log("getChangeList: leaving");
 }
 
 function readChangeList(course) {
-	alert("readChangeList: Entered");
+	console.log("readChangeList: Entered");
 	$.mobile.showPageLoadingMsg();
 	
 	// Read JSON from File
@@ -73,7 +74,7 @@ function readChangeList(course) {
                 console.log(evt.target.result);
             };
             var data = JSON.parse(reader.readAsText(file));
-            alert("readChangeList: File read from storage");
+            console.log("readChangeList: File read from storage");
             
             $('#changeList li.data').remove(); // remove old entries
             
@@ -114,7 +115,7 @@ function readChangeList(course) {
     }, getChangeList(course));
     $.mobile.hidePageLoadingMsg();
     $('#changeList').listview('refresh');
-    alert("readChangeList: Leaving");
+    console.log("readChangeList: Leaving");
 }
 
 function refresh(){
@@ -150,7 +151,7 @@ $('#btn_twitter').bind('click', function(event) {
       }, 
       function() {}, 
       function() {
-        alert('Failed to send email via Android Intent');
+        console.log('Failed to send email via Android Intent');
       }
     );
 });
@@ -168,7 +169,7 @@ function sendEmail(receiver, subject, body){
       }, 
       function() {}, 
       function() {
-        alert('Failed to send email via Android Intent');
+        console.log('Failed to send email via Android Intent');
       }
     );
 }
