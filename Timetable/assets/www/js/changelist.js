@@ -5,39 +5,89 @@ document.addEventListener("deviceready", onDeviceReady, false);
 function onDeviceReady() {
     console.log("Hallo Sven Phonegap is ready!");
     console.log("option: "+window.localStorage.getItem("option"));
+    window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, onFSSuccess, onError);
     refresh();
 }
 
 $('#select-course').bind('change', function(event){
     var selection = $(this).val();
-    //window.localStorage.setItem("option", selection);
+    // window.localStorage.setItem("option", selection);
     getChangeList(selection);
 });
 
+function onFSSuccess(fs) {
+    fileSystem = fs;
+}
+
+function onError(e) {
+	alert(e);
+}
+
 function getChangeList(course) {
-    $.mobile.showPageLoadingMsg();   
-    $('#changeList li.data').remove(); //remove old entries
     
-    //check if a network connection exists
+	alert("getChangeList: entered");
+    
+    // check if a network connection exists
     var networkState = navigator.network.connection.type;
     if(networkState === Connection.NONE){
+    	alert("getChangeList: No Connection");
         $('#changeList').append('<li class="data">'+
                 '<h3>Keine Internetverbindung vorhanden!</h3>'+
                 '<p>Es wird eine Internetverbindung benötigt um die Stundenplanänderungen abzurufen.</p>'+
                 '</li>');
         $.mobile.hidePageLoadingMsg();
     }else{
+    	alert("getChangeList: Got Connection");
         $.getJSON('http://svenadolph.net/timetable/getchanges.php?course='+course, function(data) {
-    		changes = data.items;
+        	alert("getChangeList: Fetched JSON");
+    		// Write json to file
+            fileSystem.root.getFile("changes.json", {create:true, exclusive: true}, function(fileEntry) {
+            	alert("getChangeList: Got File Access");
+            	fileEntry.createWriter(function(writer) {
+            		alert("getChangeList: Writting File to storage");
+            		writer.write(JSON.stringify(data));
+            		alert("getChangeList: File written to storage");
+            	}, onError());
+            }, onError());
+    		
+    	    $.mobile.hidePageLoadingMsg();
+    	}, onError());
+    }
+    $('#changeList').listview('refresh');
+    
+    readChangeList(course);
+    alert("getChangeList: leaving");
+}
+
+function readChangeList(course) {
+	alert("readChangeList: Entered");
+	$.mobile.showPageLoadingMsg();
+	
+	// Read JSON from File
+	fileSystem.root.getFile("changes.json", null, function(fileEntry) {
+    	fileEntry.file(function(file) {
+    		
+    		var reader = new FileReader();
+            reader.onloadend = function(evt) {
+                console.log("Read as text");
+                console.log(evt.target.result);
+            };
+            var data = JSON.parse(reader.readAsText(file));
+            alert("readChangeList: File read from storage");
+            
+            $('#changeList li.data').remove(); // remove old entries
+            
+            changes = data.items;
     		var currentCourse = null;
     		
-			// The whole date crap for the refresh button(line)
-            var now = new Date();
+    		// Read Date from File
+    		var now = file.lastModifiedDate;
             var dateString = ('0' + now.getDate()).slice(-2) + '.'
             + ('0' + (now.getMonth()+1)).slice(-2) + '.'
             + now.getFullYear()+', '
             + ('0' + (now.getHours())).slice(-2) + ':'
-            + ('0' + (now.getMinutes())).slice(-2) + ' Uhr';            
+            + ('0' + (now.getMinutes())).slice(-2) + ' Uhr';
+            
     		$('#changeList').append('<li class="data" data-icon="false" style="font-size:12px;"><a href="#" onClick="refresh();">'+
     		        'Stand '+dateString+'. Zum Aktualisieren klicken ...</a></li>');
 
@@ -47,23 +97,24 @@ function getChangeList(course) {
     		                            '</li>');
     		}
     		
-			// Write all timetable changes to UI
+    		// Write all timetable changes to UI
     		$.each(changes, function(index, change) {
     			if(currentCourse !== change.course){
     			    $('#changeList').append('<li class="data" data-role="list-divider">' + change.course +
     			            ' Semester</li>');
     			    currentCourse = change.course;
-    			}    		    
+    			}  
     		    $('#changeList').append('<li class="data"><h3>' + change.lecture +
     			                              '</h3><p>Alt: ' + change.originaldate +
     			                              '</p><strong>Neu: ' + change.alternatedate +
     			                              '</strong></li>');
     		});		
-    		$('#changeList').listview('refresh');
-    	    $.mobile.hidePageLoadingMsg();
-    	});
-    }
+    		$('#changeList').listview('refresh');       
+    	}, onError());
+    }, getChangeList(course));
+    $.mobile.hidePageLoadingMsg();
     $('#changeList').listview('refresh');
+    alert("readChangeList: Leaving");
 }
 
 function refresh(){
@@ -71,7 +122,7 @@ function refresh(){
     var oldOption = window.localStorage.getItem("option");
     if(option === "null"){
         if(oldOption === "null"){        
-            $('#changeList li.data').remove(); //remove old entries
+            $('#changeList li.data').remove(); // remove old entries
             $('#changeList').append('<li class="data">'+
                                     '<h3>Bitte wähle einen Studiengang!</h3>'+
                                     '</li>');
