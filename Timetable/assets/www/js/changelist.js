@@ -91,7 +91,7 @@ function readChangeList(course) {
 
                 if (changes.length === 0) {
                     $('#changeList').append('<li class="data">' +
-                                            '<h3>Keine Stundenplan�nderungen vorhanden!</h3>' +
+                                            '<h3>Keine Stundenplanänderungen vorhanden!</h3>' +
                                             '</li>');
                 }
                 
@@ -131,7 +131,7 @@ function refresh() {
         if (oldOption === "null") {        
             $('#changeList li.data').remove(); // remove old entries
             $('#changeList').append('<li class="data">' +
-                                    '<h3>Bitte w�hle einen Studiengang!</h3>' +
+                                    '<h3>Bitte wähle einen Studiengang!</h3>' +
                                     '</li>');
             $('#changeList').listview('refresh');
         } else {
@@ -154,7 +154,7 @@ $('#btn_cal').bind('click', function (event) {
 
 
 $('#btn_email').bind('click', function (event) {
-    sendEmail("android@svenadolph.net", "Stundenplan�nderungs App", "Hallo Sven,\n");
+    sendEmail("android@svenadolph.net", "Stundenplanänderungs App", "Hallo Sven,\n");
 });
 
 $('#btn_twitter').bind('click', function (event) {
