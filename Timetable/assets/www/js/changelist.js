@@ -6,7 +6,7 @@ function onDeviceReady() {
     console.log("Hallo Sven Phonegap is ready!");
     console.log("option: " + window.localStorage.getItem("option"));
     window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, onFSSuccess, onError);
-    refresh();
+    readChangeList();
 }
 
 $('#select-course').bind('change', function (event) {
@@ -32,17 +32,18 @@ function getChangeList(course) {
         console.log("getChangeList: No Connection");
         $('#changeList').append('<li class="data">' +
                 '<h3>Keine Internetverbindung vorhanden!</h3>' +
-                '<p>Es wird eine Internetverbindung benötigt um die Stundenplanänderungen abzurufen.</p>' +
+                '<p>Es wird eine Internetverbindung benï¿½tigt um die Stundenplanï¿½nderungen abzurufen.</p>' +
                 '</li>');
         $.mobile.hidePageLoadingMsg();
     } else {
         $.getJSON('http://svenadolph.net/timetable/getchanges.php?course=' + course, function (data) {
             // Write json to file
-            fileSystem.root.getFile("changes.json", {create: true, exclusive: true}, function (fileEntry) {
+            fileSystem.root.getFile("changes.json", {create: true, exclusive: false}, function (fileEntry) {
                 console.log("getChangeList: Got File Access");
                 fileEntry.createWriter(function (writer) {
                     console.log("getChangeList: Writting File to storage");
-                    writer.write(JSON.stringify(data));
+                    var str = course + JSON.stringify(data);
+                    writer.write(str);
                     console.log("getChangeList: File written to storage");
                 });
             });
@@ -61,7 +62,14 @@ function readChangeList(course) {
         fileEntry.file(function (file) {
             var reader = new FileReader();
             reader.onloadend = function (evt) {
-                var data = JSON.parse(evt.target.result);
+            	console.log(evt.target.result);
+            	var fileData = evt.target.result;
+            	var position = fileData.indexOf('{');
+            	course = fileData.substring(0, position);
+            	console.log(course);
+            	window.localStorage.setItem("option", course);
+            	$('#select-course').val(course).selectmenu('refresh');
+                var data = JSON.parse(fileData.substring(position, fileData.length));
                 
                 $('#changeList li.data').remove(); // remove old entries
 
@@ -80,7 +88,7 @@ function readChangeList(course) {
 
                 if (changes.length === 0) {
                     $('#changeList').append('<li class="data">' +
-                                            '<h3>Keine Stundenplanänderungen vorhanden!</h3>' +
+                                            '<h3>Keine Stundenplanï¿½nderungen vorhanden!</h3>' +
                                             '</li>');
                 }
                 
@@ -117,7 +125,7 @@ function refresh() {
         if (oldOption === "null") {        
             $('#changeList li.data').remove(); // remove old entries
             $('#changeList').append('<li class="data">' +
-                                    '<h3>Bitte wähle einen Studiengang!</h3>' +
+                                    '<h3>Bitte wï¿½hle einen Studiengang!</h3>' +
                                     '</li>');
             $('#changeList').listview('refresh');
         } else {
@@ -131,7 +139,7 @@ function refresh() {
 }
 
 $('#btn_email').bind('click', function (event) {
-    sendEmail("android@svenadolph.net", "Stundenplanänderungs App", "Hallo Sven,\n");
+    sendEmail("android@svenadolph.net", "Stundenplanï¿½nderungs App", "Hallo Sven,\n");
 });
 $('#btn_twitter').bind('click', function (event) {
     var extras = {};
