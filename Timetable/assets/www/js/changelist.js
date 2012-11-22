@@ -4,12 +4,12 @@ document.addEventListener("deviceready", onDeviceReady, false);
 
 function onDeviceReady() {
     console.log("Hallo Sven Phonegap is ready!");
-    console.log("option: "+window.localStorage.getItem("option"));
+    console.log("option: " + window.localStorage.getItem("option"));
     window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, onFSSuccess, onError);
     refresh();
 }
 
-$('#select-course').bind('change', function(event){
+$('#select-course').bind('change', function (event) {
     var selection = $(this).val();
     // window.localStorage.setItem("option", selection);
     getChangeList(selection);
@@ -19,140 +19,132 @@ function onFSSuccess(fs) {
     fileSystem = fs;
 }
 
-function onError(e) {
-	console.log(e);
+function onError(error) {
+	console.log('ERROR');
 }
 
 function getChangeList(course) {
     
-	console.log("getChangeList: entered");
-    
+	$.mobile.showPageLoadingMsg();
     // check if a network connection exists
     var networkState = navigator.network.connection.type;
-    if(networkState === Connection.NONE){
-    	console.log("getChangeList: No Connection");
-        $('#changeList').append('<li class="data">'+
-                '<h3>Keine Internetverbindung vorhanden!</h3>'+
-                '<p>Es wird eine Internetverbindung benötigt um die Stundenplanänderungen abzurufen.</p>'+
+    if (networkState === Connection.NONE) {
+        console.log("getChangeList: No Connection");
+        $('#changeList').append('<li class="data">' +
+                '<h3>Keine Internetverbindung vorhanden!</h3>' +
+                '<p>Es wird eine Internetverbindung benötigt um die Stundenplanänderungen abzurufen.</p>' +
                 '</li>');
         $.mobile.hidePageLoadingMsg();
-    }else{
-    	console.log("getChangeList: Got Connection");
-        $.getJSON('http://svenadolph.net/timetable/getchanges.php?course='+course, function(data) {
-        	console.log("getChangeList: Fetched JSON");
-    		// Write json to file
-            fileSystem.root.getFile("changes.json", {create:true, exclusive: true}, function(fileEntry) {
-            	console.log("getChangeList: Got File Access");
-            	fileEntry.createWriter(function(writer) {
-            		console.log("getChangeList: Writting File to storage");
-            		writer.write(JSON.stringify(data));
-            		console.log("getChangeList: File written to storage");
-            	}, onError());
-            }, onError());
-    		
-    	    $.mobile.hidePageLoadingMsg();
-            //readChangeList(course);
-    	}, onError());
+    } else {
+        $.getJSON('http://svenadolph.net/timetable/getchanges.php?course=' + course, function (data) {
+            // Write json to file
+            fileSystem.root.getFile("changes.json", {create: true, exclusive: true}, function (fileEntry) {
+                console.log("getChangeList: Got File Access");
+                fileEntry.createWriter(function (writer) {
+                    console.log("getChangeList: Writting File to storage");
+                    writer.write(JSON.stringify(data));
+                    console.log("getChangeList: File written to storage");
+                });
+            });
+
+            readChangeList(course);
+        }, onError());
     }
     $('#changeList').listview('refresh');
-    
-    //readChangeList(course);
-    console.log("getChangeList: leaving");
 }
 
 function readChangeList(course) {
-	console.log("readChangeList: Entered");
 	$.mobile.showPageLoadingMsg();
 	
 	// Read JSON from File
-	fileSystem.root.getFile("changes.json", null, function(fileEntry) {
-    	fileEntry.file(function(file) {
-    		
-    		var reader = new FileReader();
-            reader.onloadend = function(evt) {
-                console.log("Read as text");
-                console.log(evt.target.result);
-            };
-            var data = JSON.parse(reader.readAsText(file));
-            console.log("readChangeList: File read from storage");
-            
-            $('#changeList li.data').remove(); // remove old entries
-            
-            changes = data.items;
-    		var currentCourse = null;
-    		
-    		// Read Date from File
-    		var now = file.lastModifiedDate;
-            var dateString = ('0' + now.getDate()).slice(-2) + '.'
-            + ('0' + (now.getMonth()+1)).slice(-2) + '.'
-            + now.getFullYear()+', '
-            + ('0' + (now.getHours())).slice(-2) + ':'
-            + ('0' + (now.getMinutes())).slice(-2) + ' Uhr';
-            
-    		$('#changeList').append('<li class="data" data-icon="false" style="font-size:12px;"><a href="#" onClick="refresh();">'+
-    		        'Stand '+dateString+'. Zum Aktualisieren klicken ...</a></li>');
+	fileSystem.root.getFile("changes.json", null, function (fileEntry) {
+        fileEntry.file(function (file) {
+            var reader = new FileReader();
+            reader.onloadend = function (evt) {
+                var data = JSON.parse(evt.target.result);
+                
+                $('#changeList li.data').remove(); // remove old entries
 
-    		if(changes.length === 0){
-    		    $('#changeList').append('<li class="data">'+
-    		                            '<h3>Keine Stundenplanänderungen vorhanden!</h3>'+
-    		                            '</li>');
-    		}
-    		
-    		// Write all timetable changes to UI
-    		$.each(changes, function(index, change) {
-    			if(currentCourse !== change.course){
-    			    $('#changeList').append('<li class="data" data-role="list-divider">' + change.course +
-    			            ' Semester</li>');
-    			    currentCourse = change.course;
-    			}  
-    		    $('#changeList').append('<li class="data"><h3>' + change.lecture +
-    			                              '</h3><p>Alt: ' + change.originaldate +
-    			                              '</p><strong>Neu: ' + change.alternatedate +
-    			                              '</strong></li>');
-    		});		
-    		$('#changeList').listview('refresh');       
-    	}, onError());
-    }, getChangeList(course));
-    $.mobile.hidePageLoadingMsg();
+                changes = data.items;
+                
+                // Read Date from File
+                var now = new Date(file.lastModifiedDate),
+                    dateString = ('0' + now.getDate()).slice(-2) + '.'
+                + ('0' + (now.getMonth() + 1)).slice(-2) + '.'
+                + now.getFullYear() + ', '
+                + ('0' + (now.getHours())).slice(-2) + ':'
+                + ('0' + (now.getMinutes())).slice(-2) + ' Uhr';
+                
+                $('#changeList').append('<li class="data" data-icon="false" style="font-size:12px;"><a href="#" onClick="refresh();">' +
+                        'Stand ' + dateString + '. Zum Aktualisieren klicken ...</a></li>');
+
+                if (changes.length === 0) {
+                    $('#changeList').append('<li class="data">' +
+                                            '<h3>Keine Stundenplanänderungen vorhanden!</h3>' +
+                                            '</li>');
+                }
+                
+                // $('#changeList').append(JSON.stringify(changes));
+
+                // Write all timetable changes to UI
+                //current Course is the current semster e.g. MI2, MI4, MI6
+                var currentCourse = null;
+                $.each(changes, function (index, change) {
+                    if (currentCourse !== change.course) {
+                        $('#changeList').append('<li class="data" data-role="list-divider">' + change.course +
+                            ' Semester</li>');
+                        currentCourse = change.course;
+                    }
+                    $('#changeList').append('<li class="data"><h3>' + change.lecture +
+                                                   '</h3><p>Alt: ' + change.originaldate +
+                                                   '</p><strong>Neu: ' + change.alternatedate +
+                                                   '</strong></li>');
+                });
+                $('#changeList').listview('refresh');
+                $.mobile.hidePageLoadingMsg();
+            };
+            reader.readAsText(file);
+
+        }, onError);
+    }, onError);
     $('#changeList').listview('refresh');
-    console.log("readChangeList: Leaving");
 }
 
-function refresh(){
+function refresh() {
     var option = $('#select-course').val();    
     var oldOption = window.localStorage.getItem("option");
-    if(option === "null"){
-        if(oldOption === "null"){        
+    if (option === "null") {
+        if (oldOption === "null") {        
             $('#changeList li.data').remove(); // remove old entries
-            $('#changeList').append('<li class="data">'+
-                                    '<h3>Bitte wähle einen Studiengang!</h3>'+
+            $('#changeList').append('<li class="data">' +
+                                    '<h3>Bitte wähle einen Studiengang!</h3>' +
                                     '</li>');
             $('#changeList').listview('refresh');
-        }else{
+        } else {
             option = oldOption;
             $('#select-course').val(oldOption).trigger('change');
         }
-    }else{
+    } else {
         window.localStorage.setItem("option", option);
         getChangeList(option);
     }
 }
 
-$('#btn_email').bind('click', function(event) {
+$('#btn_email').bind('click', function (event) {
     sendEmail("android@svenadolph.net", "Stundenplanänderungs App", "Hallo Sven,\n");
 });
-$('#btn_twitter').bind('click', function(event) {
+$('#btn_twitter').bind('click', function (event) {
     var extras = {};
     extras[WebIntent.EXTRA_TEXT] = "@svendroid #stundenplanaenderungsapp ";
     window.plugins.webintent.startActivity({ 
         action: WebIntent.ACTION_SEND,
         type: 'text/plain', 
         extras: extras 
-      }, 
-      function() {}, 
-      function() {
-        console.log('Failed to send email via Android Intent');
-      }
+        }, 
+        function() {}, 
+        function() {
+            console.log('Failed to send email via Android Intent');
+        }
     );
 });
 
