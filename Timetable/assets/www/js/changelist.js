@@ -1,5 +1,8 @@
 // Wait for PhoneGap to load
 //
+var message = "nix";
+var currChange = null;
+
 document.addEventListener("deviceready", onDeviceReady, false);
 
 function onDeviceReady() {
@@ -38,7 +41,7 @@ function getChangeList(course) {
     } else {
         $.getJSON('http://svenadolph.net/timetable/getchanges.php?course=' + course, function (data) {
             // Write json to file
-            fileSystem.root.getFile("changes.json", {create: true, exclusive: true}, function (fileEntry) {
+            fileSystem.root.getFile("changes.json", {create: true, exclusive: false}, function (fileEntry) {
                 console.log("getChangeList: Got File Access");
                 fileEntry.createWriter(function (writer) {
                     console.log("getChangeList: Writting File to storage");
@@ -95,10 +98,13 @@ function readChangeList(course) {
                             ' Semester</li>');
                         currentCourse = change.course;
                     }
-                    $('#changeList').append('<li class="data"><h3>' + change.lecture +
+                    $('#changeList').append('<li class="data"><a href="#share" data-role="button" data-rel="dialog"><h3>' + change.lecture +
                                                    '</h3><p>Alt: ' + change.originaldate +
                                                    '</p><strong>Neu: ' + change.alternatedate +
-                                                   '</strong></li>');
+                                                   '</strong></a></li>');
+                    message = change.lecture + "\n Alt: " + change.originaldate + "\n Neu: " + change.alternatedate;
+                    currChange = change;
+
                 });
                 $('#changeList').listview('refresh');
                 $.mobile.hidePageLoadingMsg();
@@ -107,7 +113,7 @@ function readChangeList(course) {
 
         }, onError);
     }, onError);
-    $('#changeList').listview('refresh');
+    // $('#changeList').listview('refresh');
 }
 
 function refresh() {
@@ -130,9 +136,19 @@ function refresh() {
     }
 }
 
+$('#btn_share').bind('click', function (event) {
+    shareMsg();
+});
+
+$('#btn_cal').bind('click', function (event) {
+    addToCalendar();
+});
+
+
 $('#btn_email').bind('click', function (event) {
     sendEmail("android@svenadolph.net", "Stundenplanänderungs App", "Hallo Sven,\n");
 });
+
 $('#btn_twitter').bind('click', function (event) {
     var extras = {};
     extras[WebIntent.EXTRA_TEXT] = "@svendroid #stundenplanaenderungsapp ";
@@ -141,12 +157,44 @@ $('#btn_twitter').bind('click', function (event) {
         type: 'text/plain', 
         extras: extras 
         }, 
-        function() {}, 
-        function() {
-            console.log('Failed to send email via Android Intent');
+        function () {}, 
+        function () {
+            console.log('Failed to share on twitter via Android Intent');
         }
     );
 });
+
+function shareMsg(){
+   var extras = {};
+    extras[WebIntent.EXTRA_TEXT] = message;
+    window.plugins.webintent.startActivity({ 
+        action: WebIntent.ACTION_SEND,
+        type: 'text/plain', 
+        extras: extras 
+        }, 
+        function () {}, 
+        function () {
+            console.log('Failed to share appointment via Android Intent');
+        }
+    ); 
+}
+
+function addToCalendar() {
+    var extras = {};
+    extras.title = currChange.lecture;
+    extras.description = message;
+    
+    window.plugins.webintent.startActivity({ 
+        action: WebIntent.ACTION_EDIT,
+        type: 'vnd.android.cursor.item/event', 
+        extras: extras 
+      }, 
+      function () {}, 
+      function () {
+        console.log('Failed to add new entry via Android Intent');
+      }
+    );
+}
 
 function sendEmail(receiver, subject, body){
     var extras = {};
@@ -159,8 +207,8 @@ function sendEmail(receiver, subject, body){
         type: 'message/rfc822', 
         extras: extras 
       }, 
-      function() {}, 
-      function() {
+      function () {}, 
+      function () {
         console.log('Failed to send email via Android Intent');
       }
     );

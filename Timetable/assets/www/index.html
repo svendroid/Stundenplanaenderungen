@@ -3,7 +3,8 @@
 <head>
 <title>Stundenplanänderungen Hochschule Hof</title>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
-<link rel="stylesheet" href="css/jquery.mobile-1.0.1.min.css" />
+<!-- <link rel="stylesheet" href="css/jquery.mobile-1.0.1.min.css" /> -->
+<link rel="stylesheet" href="css/jquery.mobile-1.2.0.css" />
 <link rel="stylesheet" href="css/jqm-icon-pack-1.0.css" />
 <link rel="stylesheet" href="css/styles.css" />
 </head>
@@ -12,8 +13,8 @@
        
 <div id="changeListPage" data-role="page">
 
-	<div data-role="header" data-theme="e" data-position="fixed">
-		<h1>Stundenplanänderungen HS Hof</h1>
+	<div data-role="header" data-theme="e">
+		<h1>Stundenplanänderungen Hof</h1>
 <!-- 		<a href="#" onClick="refresh();" data-icon="refresh" class="ui-btn-right" data-theme="c" data-iconpos="notext">Refresh</a> -->
 	</div>
 
@@ -67,14 +68,30 @@
 		<a href="#" id="btn_email" data-role="button" data-inline="true" data-icon="email">Email</a>
 		<a href="#" id="btn_twitter" data-role="button" data-inline="true" data-icon="twitter">Twitter</a>
 		<a href="https://play.google.com/store/search?q=pub:svendroid" id="btn_store" data-role="button" data-inline="true" data-icon="android">Play</a>
+		<a href="#share" data-role="button" data-rel="dialog" data-inline="true" data-icon="twitter">TEST</a>
     </div>
 </div>
 
+
+<!-- Start of page: #share -->
+<div data-role="dialog" id="share">
+
+	<div data-role="header" data-theme="d">
+		<h1 style="text-align: center;">Terminänderung ...</h1>
+	</div><!-- /header -->
+
+	<div data-role="content" data-inset="true" data-theme="c">	
+		<a id="btn_cal" href="#changeListPage" data-role="button" data-rel="back" data-theme="c">in den Kalender eintragen</a>       
+		<a id="btn_share" href="#changeListPage" data-role="button" data-rel="back" data-theme="c">an Freunde verschicken</a>    		
+	</div><!-- /content -->
+
+</div><!-- /page popup -->
+
 <script src="js/jquery.js"></script>
-<script src="js/jquery.mobile-1.2.0.js"></script>
 <script type="text/javascript" charset="utf-8" src="cordova-2.2.0.js"></script>
 <script type="text/javascript" charset="utf-8" src="js/webintent.js"></script>
 <script src="js/changelist.js"></script>
+<script src="js/jquery.mobile-1.2.0.js"></script>
 
 </body>
 
