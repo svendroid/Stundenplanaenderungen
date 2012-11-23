@@ -65,7 +65,6 @@ function readChangeList(course) {
         fileEntry.file(function (file) {
             var reader = new FileReader();
             reader.onloadend = function (evt) {
-            	console.log(evt.target.result);
             	var fileData = evt.target.result;
             	var position = fileData.indexOf('{');
             	course = fileData.substring(0, position);
@@ -117,6 +116,11 @@ function readChangeList(course) {
                 $('#changeList').listview('refresh');
                 $.mobile.hidePageLoadingMsg();
             };
+            
+            reader.onerror = function (evt) {
+            	getChangeList(course);
+            }
+            
             reader.readAsText(file);
 
         }, onError);
