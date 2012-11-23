@@ -22,8 +22,14 @@ function onFSSuccess(fs) {
     fileSystem = fs;
 }
 
-function onError(error) {
-	console.log('ERROR');
+function onError(evt) {
+	console.log(evt.code);
+	$.mobile.hidePageLoadingMsg();
+}
+
+function fail(evt) {
+	console.log(evt.target.error.code);
+	$.mobile.hidePageLoadingMsg();
 }
 
 function getChangeList(course) {
@@ -52,7 +58,7 @@ function getChangeList(course) {
             });
 
             readChangeList(course);
-        }, onError());
+        }, onError);
     }
     $('#changeList').listview('refresh');
 }
@@ -116,14 +122,9 @@ function readChangeList(course) {
                 $('#changeList').listview('refresh');
                 $.mobile.hidePageLoadingMsg();
             };
-            
-            reader.onerror = function (evt) {
-            	getChangeList(course);
-            }
-            
             reader.readAsText(file);
-
         }, onError);
+        $.mobile.hidePageLoadingMsg();
     }, onError);
     // $('#changeList').listview('refresh');
 }
